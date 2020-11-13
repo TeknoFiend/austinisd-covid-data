@@ -33,5 +33,5 @@ filename = "#{updated_at.strftime('%Y-%m-%d')}.csv"
 File.open(filename, 'w') { |file| file.write(csv) }
 
 `git add #{filename}`
-# `git commit #{filename} -m "Data for #{updated_at}"`
-# `git push`
+`git commit #{filename} -m "Data for #{updated_at}"`
+`git push`
