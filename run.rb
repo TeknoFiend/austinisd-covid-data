@@ -17,7 +17,8 @@ unless( date = $1 )
   raise StandardError.new("Error: couldn't find update date")
 end
 
-updated_at = Date.parse($1)
+month,day,year = date.strip.split('/').map(&:strip).map(&:to_i)
+updated_at = Date.new(year+2000,month,day)
 
 table = $fragment.search('tbody')
 rows = table.search('tr')
@@ -30,3 +31,7 @@ csv = "School,Total New Cases,Total Cumulative Cases,Total New Exposures,Total C
 
 filename = "#{updated_at.strftime('%Y-%m-%d')}.csv"
 File.open(filename, 'w') { |file| file.write(csv) }
+
+`git add #{filename}`
+# `git commit #{filename} -m "Data for #{updated_at}"`
+# `git push`
