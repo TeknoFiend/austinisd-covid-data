@@ -19,14 +19,24 @@ while(true) do
     raise StandardError.new('Error: data format changed')
   end
 
+
   $fragment.text =~ /updated (\d+\/\d+\/\d+)/i
-  unless( date = $1 )
-    raise StandardError.new("Error: couldn't find update date")
+  date = $1
+
+  updated_at = nil
+
+  if( date )
+    month,day,year = date.strip.split('/').map(&:strip).map(&:to_i)
+    year = (year + 2000) if year < 100
+    updated_at = Date.new(year,month,day)
+  else
+    $fragment.text =~ /updated (.*)/i
+    updated_at = Date.parse($1)
+    unless updated_at > Date.parse('2020-12-01')
+      raise StandardError.new("Error: couldn't find update date")
+    end
   end
 
-  month,day,year = date.strip.split('/').map(&:strip).map(&:to_i)
-  year = (year + 2000) if year < 100
-  updated_at = Date.new(year,month,day)
 
   table = $fragment.search('tbody')
   rows = table.search('tr')
