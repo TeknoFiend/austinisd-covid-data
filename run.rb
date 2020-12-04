@@ -52,6 +52,7 @@ while(true) do
 
   `git add #{filename}`
   `git commit #{filename} -m "Data for #{updated_at}"`
+  `git pull`
   `git push`
 
   puts "Updated #{filename}"
